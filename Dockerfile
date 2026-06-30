@@ -1,15 +1,14 @@
 FROM python:3.10
 
-# safer working directory
 WORKDIR /app
 
 COPY . /app/
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
-
-# recommended for Django production
 RUN pip install gunicorn
+
+RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
