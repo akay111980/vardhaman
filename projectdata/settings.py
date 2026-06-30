@@ -17,7 +17,8 @@ from decouple import config
 
 import logging
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 LOGGING_DIR = os.path.join(
     BASE_DIR, "static_logs"
@@ -27,17 +28,17 @@ if not os.path.exists(LOGGING_DIR):
     os.makedirs(LOGGING_DIR)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = "django-insecure-#47_5l_#mb5-n@j9)5o3ywi3^8)8#u+=_cgy%14**2fy+aue"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", default=False, cast=bool)
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -61,18 +62,15 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-
-    "corsheaders.middleware.CorsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",  # cors middleware
 ]
+
 
 ROOT_URLCONF = "projectdata.urls"
 
@@ -113,9 +111,9 @@ WSGI_APPLICATION = "projectdata.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "djongo",
-        "NAME": config("DATABASE_NAME"),
+        "NAME": "vardhamanDB",
         "CLIENT": {
-            "host": config("DATABASE_URI"),
+            "host": "mongodb://nikhilpatil3701:GlCoDxq8w60BIWD4@vardhaman-shard-00-00.hvdwy.mongodb.net:27017,vardhaman-shard-00-01.hvdwy.mongodb.net:27017,vardhaman-shard-00-02.hvdwy.mongodb.net:27017/?ssl=true&replicaSet=atlas-7n5dye-shard-0&authSource=admin&appName=Vardhaman&compressors=zlib",
         },
     }
 }
@@ -236,5 +234,3 @@ SIMPLE_JWT = {
     "VERIFYING_KEY": None,
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
-
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
