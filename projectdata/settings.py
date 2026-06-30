@@ -13,20 +13,16 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 from datetime import datetime, timedelta
+from dotenv import config
 
 import logging
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-LOGGING_DIR = os.path.join(
-    BASE_DIR, "static_logs"
-)  # Create a 'logs' directory in your project
-
+# Logging configuration
+LOGGING_DIR = os.path.join(BASE_DIR, "logs")
 if not os.path.exists(LOGGING_DIR):
     os.makedirs(LOGGING_DIR)
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 
 # Quick-start development settings - unsuitable for production
@@ -60,7 +56,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    # "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -76,7 +72,7 @@ ROOT_URLCONF = "projectdata.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -96,26 +92,26 @@ WSGI_APPLICATION = "projectdata.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 # MySql
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": config("DATABASE_NAME"),
-#         "USER": config("DATABASE_USER"),
-#         "PASSWORD": config("DATABASE_PASSWORD"),
-#         "HOST": config("DATABASE_HOST"),
-#         "PORT": config("DATABASE_PORT", default="5432"),
-#     }
-# }
-
 DATABASES = {
     "default": {
-        "ENGINE": "djongo",
-        "NAME": "vardhamanDB",
-        "CLIENT": {
-            "host": "mongodb://nikhilpatil3701:GlCoDxq8w60BIWD4@vardhaman-shard-00-00.hvdwy.mongodb.net:27017,vardhaman-shard-00-01.hvdwy.mongodb.net:27017,vardhaman-shard-00-02.hvdwy.mongodb.net:27017/?ssl=true&replicaSet=atlas-7n5dye-shard-0&authSource=admin&appName=Vardhaman&compressors=zlib",
-        },
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": config("DATABASE_NAME"),
+        "USER": config("DATABASE_USER"),
+        "PASSWORD": config("DATABASE_PASSWORD"),
+        "HOST": config("DATABASE_HOST"),
+        "PORT": config("DATABASE_PORT", default="5432"),
     }
 }
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django_mongodb_backend",
+#         "NAME": "vardhamanDB",
+#         "CLIENT": {
+#             "host": "mongodb+srv://nikhilpatil3701:BydsYzFjk8wiy6sF@vardhaman-shard-00-00.hvdwy.mongodb.net:27017,vardhaman-shard-00-01.hvdwy.mongodb.net:27017,vardhaman-shard-00-02.hvdwy.mongodb.net:27017/?ssl=true&replicaSet=atlas-7n5dye-shard-0&authSource=admin&appName=Vardhaman&compressors=zlib",
+#             # "host": "mongodb+srv://nikhilpatil3701:BydsYzFjk8wiy6sF@vardhaman.hvdwy.mongodb.net/vardhamanDB?retryWrites=true&w=majority&appName=Vardhaman",
+#         },
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -152,45 +148,22 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Image Or Path Url
-# STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static_files')
-
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, "static_media")
-
-import os
-
 # Static files (CSS, JavaScript, images)
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(
-    BASE_DIR, "static_files"
-)  # Directory to store collected static files
+STATIC_ROOT = os.path.join(BASE_DIR, "static_files")
 STATICFILES_DIRS = [
-    os.path.join(
-        BASE_DIR, "static"
-    ),  # This is the directory where your static files are located
+    os.path.join(BASE_DIR, "static"),
 ]
-
 
 # Media files (uploads)
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(
-    BASE_DIR, "static_media"
-)  # where uploaded media files will be stored
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# Specify authentication classes
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': [
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#     ],
-# }
 
 # Allow Origin to Use API
 CORS_ORIGIN_ALLOW_ALL = True
@@ -235,4 +208,4 @@ SIMPLE_JWT = {
 }
 
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

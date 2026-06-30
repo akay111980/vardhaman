@@ -4,6 +4,7 @@ from . import templateviews
 
 urlpatterns = [
     # Mobile APIs
+    path('api/restore_from_excel', views.restoreFromExcel),
     path('api/user_register', views.userRegister),
     path('api/user_login', views.userLogin),
     path('api/user_logout', views.userLogout),

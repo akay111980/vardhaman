@@ -155,6 +155,28 @@ def getUserIdBasedOnToken(refresh_token):
 
 
 # User Register API
+@api_view(["GET", "POST"])
+def restoreFromExcel(request):
+    try:
+        from restore_from_excel import run_restore
+
+        result = run_restore()
+        return Response(
+            {
+                "message": "Excel restore completed successfully.",
+                "result": result,
+            },
+            status=200,
+        )
+    except Exception as e:
+        logger.exception("Excel restore failed")
+        return Response(
+            {"message": "Excel restore failed.", "error": str(e)},
+            status=500,
+        )
+
+
+# User Register API
 @api_view(["POST"])
 def userRegister(request):
     try:
