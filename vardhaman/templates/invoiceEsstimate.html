@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Estimate Bill</title>
+
+    <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+
+    <style>
+        body {
+            background: #f2f2f2;
+        }
+
+        .bill-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .bill {
+            width: 300px;
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            font-family: monospace;
+        }
+
+        .center { text-align: center; }
+        .bold { font-weight: bold; }
+        .small { font-size: 12px; }
+
+        .line {
+            border-top: 1px dashed #000;
+            margin: 8px 0;
+        }
+
+        table {
+            width: 100%;
+            font-size: 13px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 4px 0;
+            vertical-align: top;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        td.qty, th.qty {
+            text-align: center;
+            width: 40px;
+        }
+
+        td.amount, th.amount {
+            text-align: right;
+            width: 70px;
+        }
+
+        td.item-name {
+            word-break: break-word;   /* breaks long words */
+            white-space: normal;      /* wrap text */
+        }
+
+        .total-row {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .bill, .bill * {
+                visibility: visible;
+            }
+            .bill {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 280px;
+            }
+            .container-fluid {
+                display: none;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between mb-3">
+        <button class="btn btn-secondary" onclick="history.back()">
+            ← Back
+        </button>
+
+        <button class="btn btn-primary" onclick="window.print()">
+            Print
+        </button>
+    </div>
+</div>
+
+<div class="bill-wrapper">
+
+    <div class="bill">
+        <div class="center bold">ESSTIMATE</div>
+        <div class="center small">
+            Invoice Date: {{ esstimate.invoice_date | date:"d-m-Y" }}
+        </div>
+
+        <div class="line"></div>
+
+        <div class="small">Customer: {{ esstimate.customer_name }}</div>
+        <div class="small">Contact: {{ esstimate.customer_number }}</div>
+
+        <div class="line"></div>
+
+        <table>
+            <thead>
+                <tr class="bold">
+                    <th>Item</th>
+                    <th class="qty">Qty</th>
+                    <th class="amount">Amount</th>
+                </tr>
+            </thead>
+        </table>
+
+        <div class="line"></div>
+
+        <table>
+            <tbody>
+                {% for item in esstimate.items_list %}
+                <tr>
+                    <td class="item-name">{{ item.product_name_eng }}</td>
+                    <td class="qty">{{ item.quantity }}</td>
+                    <td class="amount">
+                        ₹{% widthratio item.product_price 1 item.quantity %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="line"></div>
+
+        <table>
+            <tr class="total-row">
+                <td>Gross Total</td>
+                <td></td>
+                <td class="amount">₹{{ esstimate.grand_total_amount }}</td>
+            </tr>
+        </table>
+
+        <div class="line"></div>
+
+        <div class="center bold">Thank You 🙏</div>
+        <div class="center small">Visit Again!</div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

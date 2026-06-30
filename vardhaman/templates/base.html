@@ -1,0 +1,18 @@
+{% load static %}
+<nav class="navbar p-l-5 p-r-5">
+    <ul class="nav navbar-nav navbar-left">
+        <li>
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="bars"><i class="zmdi zmdi-menu"></i>
+                </a>
+                <a class="navbar-brand" href="{% url 'indexpage' %}">
+                    <img src="{% static 'images\vardhaman.png' %}" width="30">
+                </a>
+            </div>
+        </li>
+        </li>
+        <li class="float-right">
+            <a title="Log-Out" href="{% url 'logout' %}" class="mega-menu" data-close="true"><i class="zmdi zmdi-power" style="font-size: 30px; margin-right: 20px;"></i></a>
+        </li>
+    </ul>
+</nav>

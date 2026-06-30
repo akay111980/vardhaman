@@ -1,0 +1,646 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="csrf-token" content="iL8hUXsdXy71MbOZjq4fWUv4KGPZnJ7k17P7RClL">
+    <link rel="icon" href="https://thememakker.com/templates/oreo/hospital/laravel/public/favicon.ico" type="image/x-icon"> 
+    <!-- Favicon-->
+    <link rel="icon" href="{% static 'images/vardhaman.png' %}" type="image/png" />
+    <title>Vardhaman Gruh Udhyog</title>
+    <meta name="description" content="Oero Laravel">
+    <meta name="author" content="Oero Laravel">
+
+    <link rel="stylesheet" href="{% static 'assets\plugins\bootstrap\css\bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets\plugins\jvectormap\jquery-jvectormap-2.0.3.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets\plugins\morrisjs\morris.min.css' %}">
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="{% static 'assets\css\main.css' %}">
+    <link rel="stylesheet" href="{% static 'assets\css\color_skins.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<style>
+    .imageData {
+        height: 5rem;
+        width: 6rem;
+    }
+    .image-container {
+        position: relative;
+        display: inline-block; /* Ensures the container wraps around the image */
+    }
+    .image {
+        width: 100px; /* Set the width of the image */
+        height: 100px; /* Automatically adjust the height to maintain aspect ratio */
+        border: 2px solid black; /* Add a border around the image */
+        border-radius: 8px; /* Add rounded corners to the border */
+        margin: 10px; /* Add margin around the image */
+        padding: 5px; /* Add padding inside the border */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a box shadow for a subtle effect */
+    }
+
+    .bill {
+        font-family: monospace;
+        font-size: 14px;
+    }
+    .bill h4 {
+        text-align: center;
+        margin-bottom: 5px;
+    }
+    .bill hr {
+        margin: 6px 0;
+    }
+    .bill table {
+        width: 100%;
+    }
+    .bill td {
+        padding: 2px 0;
+    }
+    .bill .right {
+        text-align: right;
+    }
+    .bill .center {
+        text-align: center;
+    }
+</style>
+
+
+
+<body class="theme-purple">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+
+            <div class="m-t-30"><img class="zmdi-hc-spin" src="{% static 'assets\images\logo.svg' %}" width="48"
+                    height="48" alt="Civil Hospital"></div>
+            <p>Please wait...</p>
+        </div>
+    </div>
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    {% include 'base.html' %} 
+    {% include 'left.html' %}
+   <section class="content home">
+        <div class="block-header">
+            <div class="col-lg-3 col-md-3 col-sm-12">
+                <h2><img class="navbar-brand" src="{% static 'assets\images\Index-Icons\order.jpg' %}" width="50" style="border-radius: 100px;"/>Esstimate Page<small class="text-muted">Welcome to Vardhaman Gruh Udhyog</small></h2>
+            </div>
+        </div>
+        <br>
+        <div class="body container-fluid">
+            <!-- Nav tabs -->
+            <!-- Tab panes -->
+            <div class="tab-content m-t-10">
+                <div class="tab-pane table-responsive active" id="All">
+                    <div class="container">
+                        <div class="form-container">
+                            <form id="productForm" autocomplete='off' class="needs-validation" novalidate enctype="multipart/form-data" onsubmit="return false;">
+
+                                <div class="form-row">
+                                    <div class="col-md-2 mb-2">
+                                        <label for="orderID">Order Id:</label>
+                                        <input type="text" class="form-control" id="orderID" Placeholder="Please Enter Order Id" name="orderid" autocomplete="off">
+                                        <div class="invalid-feedback">
+                                            Please enter a Order ID.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 mb-3">
+                                    </div>
+                                    <div class="col-md-2 mb-3">
+                                        <label for="customerName">Invoice Date:</label>
+                                        <input type="date" class="form-control customerName" id="billingdate" name="billingdate">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="customerName">Customer's Name:</label>
+                                        <input type="text" class="form-control customerName" id="customerName" Placeholder='Please Enter Name of Customer' name="customerName" autocomplete="off" required>
+                                        <div class="invalid-feedback">
+                                            Please enter a Customer's name.
+                                        </div>
+                                        <div class="customerList" id="customerList" hidden>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="customerNumber">Customer's Contact No:</label>
+                                        <input type="text" class="form-control" id="customerNo" maxlength="10" oninput="validateNumeric(this)" Placeholder="Please Enter Customer's Contact Number" name="customerNo" autocomplete="off"  required>
+                                        <div class="invalid-feedback">
+                                            Please enter a Customer's Contact Number.
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <div style="display:flex; justify-contain:space-between">
+                                    <div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr colspan='6'>Product Listing</tr>
+                                            </thead>
+                                            <tbody id="ProductCart">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-12 mb-3">
+                                        <label for="ProductSearch">Search Product:</label>
+                                        <input type="text" class="form-control searchProduct" id="searchProduct" Placeholder="Search Product Name" name="searchProduct" autocomplete="off">
+                                        <div class="productList" id="productList" hidden>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <hr/>
+                                <div style="margin: 1rem;"></div>
+                                <div class="form-row">
+                                    <div class="col-md-12 text-right">
+                                        <button type="button" class="btn btn-info" onclick="resetThePage()">Reset</button>
+                                        <button type="button" class="btn btn-success mr-2" onclick="generateBill()">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Bill Modal -->
+        <div class="modal fade" id="billModal" tabindex="-1">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-body" id="billContent">
+                <!-- Bill content injected by JS -->
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <button onclick="closeBillModal()" class="btn btn-secondary btn-sm">Close</button>
+                <button onclick="submitData()" class="btn btn-success btn-sm">Submit</button>
+                <!-- <button class="btn btn-success btn-sm" onclick="printBill()">Print</button> -->
+            </div>
+            </div>
+        </div>
+        </div>
+
+    </section>
+    <!-- Scripts -->
+    <script src="{% static 'assets\bundles\libscripts.bundle.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'assets\bundles\vendorscripts.bundle.js' %}"></script>
+    <script>
+        document.getElementById('billingdate').value = new Date().toISOString().split('T')[0];
+
+        // return the integer value
+        function validateNumeric(input) {
+            // Remove non-numeric characters and allow for decimal points
+            input.value = input.value.replace(/[^0-9.]/g, '');
+            
+            // Remove extra decimal points
+            input.value = input.value.replace(/\.{2,}/g, '.');
+        
+            // Remove leading decimal point
+            input.value = input.value.replace(/^\./g, '');
+            
+            // Remove non-leading minus signs
+            input.value = input.value.replace(/-+/g, m => (m.length > 1 ? '' : m));
+        
+            // Remove leading zeros, except for the case where it's the only character
+            input.value = input.value.replace(/^0+(?=[^.])/, '');
+        }        
+
+        // DIsplay the data into cart
+        function displayCart(){
+            let productCart = JSON.parse(sessionStorage.getItem('productCart')) || [];
+            let productList = sessionStorage.getItem('productList');
+            
+            jQuery('#searchProduct').val('');
+            jQuery("#productList").html("")
+            jQuery("#cartItem").val(productList);
+            jQuery("#ProductCart").html('');
+            let addition = 0.00
+
+            $.each(productCart, function(i, item){
+                addition = (parseFloat(addition) + (parseFloat(item.product_price)*parseFloat(item.quantity)))
+                jQuery("#ProductCart").append(`
+                <tr style="font-size: 14px;font-family: monospace;">
+                    <td>
+                        ${item.product_name_eng} (${item.product_qty})
+                    </td>
+                    <td>
+                        <div style="display:flex; justify-content: space-between;flex-wrap: nowrap;">
+                           ₹ <input style="width:2.5rem" class='priceInput' dataId=${JSON.stringify(item.id)} type='text' value="${parseFloat(item.product_price)}"/>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="display:flex; justify-content: space-between;flex-wrap: nowrap;">
+                            <div style="margin-right:1rem; cursor: pointer;"  class='remQTY' dataId=${JSON.stringify(item.id)}> - </div>
+                            <input style="width:2.5rem" class='qtyInput' dataId=${JSON.stringify(item.id)} type='text' value="${item.quantity}"/>
+                            <div style="margin-left:1rem; cursor: pointer;"  class='addQTY' dataId=${JSON.stringify(item.id)}> +</div>
+                        </div>
+                    </td>
+                    <td>
+                        ₹ ${parseFloat(item.product_price)*parseFloat(item.quantity)}
+                    </td>
+                    <td>
+                        <i class="zmdi zmdi-delete deletme" dataId=${JSON.stringify(item.id)}></i>
+                    </td>
+                </tr>`)
+            })
+
+            
+            if(productCart.length !== 0){
+                jQuery("#ProductCart").append(`
+                    <tr style="font-size: 14px;font-family: monospace;">
+                        <td></td>
+                        <td></td>
+                        <td> <b>Total</b></td>
+                        <td>
+                            ₹ <span id='totalbill'>${addition}</span>
+                        </td>
+                    </tr>`)
+            }
+
+            sessionStorage.setItem("totalamount", addition)
+        }
+        
+
+        function removeItemFromCart (){
+            const productId = JSON.parse(jQuery(event.target).attr('dataId'));
+
+            let productCart = JSON.parse(sessionStorage.getItem('productCart')) || [];
+            let productObject = JSON.parse(sessionStorage.getItem('productList')) || [];
+
+            productCart = productCart.filter(item => item.id !== productId);
+            productObject = productObject.filter(item => item.product !== productId);
+
+            sessionStorage.setItem('productCart', JSON.stringify(productCart));
+            sessionStorage.setItem('productList', JSON.stringify(productObject));
+            displayCart()
+        }
+
+        // Cart Update function
+        function updateCart (filterValue, productId, type,currentQty = 0, is_cart =true){
+            // Retrieve the existing productCart array from session storage
+            let productCart = JSON.parse(sessionStorage.getItem('productCart')) || [];
+            let productObject = JSON.parse(sessionStorage.getItem('productList')) || [];
+
+            // Check if the filterValue exists in the productCart array
+            const existingProductIndex = productCart.findIndex(item => item.id == productId);
+            const ProductIndex = productObject.findIndex(item => item.product == productId);
+
+            // If the product already exists in the productCart array, update its quantity
+            if(is_cart){
+
+                if (existingProductIndex !== -1) {
+                    if(productCart[existingProductIndex].quantity < 0){
+                        return
+                    }
+                    if(type == 'increment'){
+                        productCart[existingProductIndex].quantity++; // Update quantity or any other property as needed
+                    }else if(type == 'setes'){
+                        productCart[existingProductIndex].quantity = currentQty; // Update quantity or any other property as needed
+                    }else{                    
+                        productCart[existingProductIndex].quantity--; // Update quantity or any other property as needed
+                    }
+                }if (ProductIndex !== -1) {
+                    if(productObject[ProductIndex].qty < 0){
+                        return
+                    }
+                    if(type == 'increment'){
+                        productObject[ProductIndex].qty++; // Update quantity or any other property as needed
+                    }else if(type == 'setes'){
+                        productObject[ProductIndex].qty = currentQty; // Update quantity or any other property as needed
+                    }else{                    
+                        productObject[ProductIndex].qty--; // Update quantity or any other property as needed
+                    }
+                } else {
+                    // If the product doesn't exist in the productCart array, add it
+                    if (filterValue) {
+                        productObject.push({product:filterValue.id,qty: 1}); // Add quantity or any other property as needed
+                        productCart.push({...filterValue, quantity: 1}); // Add quantity or any other property as needed
+                    }
+                }
+                // Update the productCart array in session storage
+            }else{
+                productObject[ProductIndex].product_price = currentQty;
+                productCart[ProductIndex].product_price = currentQty;
+            }
+            sessionStorage.setItem('productCart', JSON.stringify(productCart));
+            sessionStorage.setItem('productList', JSON.stringify(productObject));
+            displayCart()
+        }
+
+        // Decrease value
+        function removeOne (event){
+            const productId = JSON.parse(jQuery(event.target).attr('dataId'));
+            let productCart = JSON.parse(sessionStorage.getItem('productCart')) || [];
+            const filterValue = productCart.find((item) => item.id ==productId )
+            updateCart(filterValue,productId, 'abatement')
+        }
+
+        // reset the form
+        function resetThePage(){
+            jQuery("#customerName").val('');
+            jQuery("#customerNo").val('');
+
+            sessionStorage.setItem('productCart', JSON.stringify([]));
+            sessionStorage.setItem('productList', JSON.stringify([]));
+            displayCart()
+        }
+
+        // increment value
+        function incrementqty (event){
+            const productId = JSON.parse(jQuery(event.target).attr('dataId'));
+            let productCart = JSON.parse(sessionStorage.getItem('productCart')) || [];
+            const filterValue = productCart.find((item) => item.id ==productId )
+            updateCart(filterValue, productId, 'increment')
+        }
+
+        function priceInputUpdate(event){
+            const updatedPrice = JSON.parse(jQuery(event.target).val());
+            const productId = JSON.parse(jQuery(event.target).attr('dataId'));
+            let productCart = JSON.parse(sessionStorage.getItem('productCart')) || [];
+            const filterValue = productCart.find((item) => item.id ==productId )
+            updateCart(filterValue,productId, '', updatedPrice, false)
+            
+        }
+
+        // Corrected function definition
+        function handleclick (event) {
+            // Retrieve item data from the clicked element's data attribute
+            const productId = JSON.parse(jQuery(event.target).data('product'));
+            const productList = JSON.parse(sessionStorage.getItem('searchProductList'))
+            const filterValue = productList.find((item) => item.id ==productId )
+            updateCart(filterValue,productId, 'increment')
+        }
+        
+        function handleCustomer(event){
+            const customerData = JSON.parse(jQuery(event.target).attr('data-value'));
+            jQuery("#customerName").val(customerData.name)
+            jQuery("#customerNo").val(parseInt(customerData.contact_no))
+            jQuery("#customerList").html("")
+            jQuery("#customerList").attr("hidden",true)
+        }
+        
+        function handleChanageQty(event){
+            const qtyValue = JSON.parse(jQuery(event.target).val());
+            const productId = JSON.parse(jQuery(event.target).attr('dataId'));
+            let productCart = JSON.parse(sessionStorage.getItem('productCart')) || [];
+            const filterValue = productCart.find((item) => item.id ==productId )
+            updateCart(filterValue,productId, 'setes',qtyValue)   
+        }
+        
+        jQuery(document).ready(function(){
+            sessionStorage.setItem('productCart',JSON.stringify([]));
+            sessionStorage.setItem('productList',JSON.stringify([]));
+            jQuery('.searchProduct').on('input', function() {
+                const searchValue = jQuery('#searchProduct').val();
+                mydata = {name:searchValue, 'csrfmiddlewaretoken': '{{ csrf_token }}'}
+                jQuery("#productList").attr("hidden",true)
+                if(searchValue.length >= 3){
+                    jQuery("#productList").html("")
+                    $.ajax({
+                        url : "{% url 'productSearchByName' %}",
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(mydata),
+                        success: function(response) {
+                            jQuery("#productList").html("")
+                            // Handle successful response
+                            if(response.status == 200){
+                                jQuery("#productList").removeAttr("hidden")
+                                const dataResponse = response.data
+                                if(dataResponse.length !== 0){
+                                    sessionStorage.setItem('searchProductList', JSON.stringify(dataResponse));
+                                    $.each(dataResponse, function(i, item){
+                                        jQuery("#productList").append(`<p class="productItem" style="cursor: pointer;" data-product='${JSON.stringify(item.id)}'> ${item.product_name_eng} (${item.product_qty}) ₹${item.product_price}</p>`);
+                                    })
+                                }else{
+                                    jQuery("#productList").append(`<p>No Product Available</p>`);
+                                }
+                            }
+                            console.log(response.status);
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle error
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+
+            jQuery('.customerName').on('input', function() {
+                console.log("Line no 344",)
+                const userName = jQuery('#customerName').val();
+                mydata = {name:userName, 'csrfmiddlewaretoken': '{{ csrf_token }}'}
+                jQuery("#customerList").attr("hidden",true)
+                if(userName.length >= 3){
+                    jQuery("#customerList").html("")
+                    $.ajax({
+                        url : "{% url 'customerSearchByName' %}",
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(mydata),
+                        success: function(response) {
+                            jQuery("#customerList").html("")
+                            // Handle successful response
+                            if(response.status == 200){
+                                jQuery("#customerList").removeAttr("hidden")
+                                const dataResponse = response.data
+                                if(dataResponse.length !== 0){
+                                    $.each(dataResponse, function(i, item){
+                                        jQuery("#customerList").append(`<p class="customerValue" style="cursor: pointer;" data-value='${JSON.stringify(item)}'> ${item.name} (${item.contact_no})</p>`);
+                                    })
+                                }else{
+                                    jQuery("#customerList").append(`<p>No Record</p>`);
+                                    setTimeout(function(){
+                                        jQuery("#customerList").html("");
+                                        jQuery("#customerList").attr("hidden",true)
+                                    },2000)
+                                }
+                            }
+                            console.log(response.status);
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle error
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+
+            
+            jQuery(document).on('click', '.customerValue', handleCustomer); // Handle Customer
+            jQuery(document).on('click', '.productItem', handleclick); // Add to Cart
+            jQuery(document).on('click', '.remQTY', removeOne); // Qty -1
+            jQuery(document).on('click', '.addQTY', incrementqty); // Qty +1
+            jQuery(document).on('click', '.deletme', removeItemFromCart); // Remove from cart
+            
+            // This function call while the input updated
+            jQuery(document).on('blur', '.qtyInput', handleChanageQty);
+            jQuery(document).on('keydown', '.qtyInput', function (e) {
+                if (e.key === "Enter") {
+                    e.preventDefault();     // stops form submit if any
+                    handleChanageQty(e);
+                    this.blur();            // optional: remove focus
+                }
+            });
+
+            // This function call while the price input Updated
+            jQuery(document).on('blur', '.priceInput', priceInputUpdate);
+            jQuery(document).on('keydown', '.priceInput', function (e) {
+                if (e.key === "Enter") {
+                    console.log("THis entered pressed")
+                    e.preventDefault();     // stops form submit if any
+                    priceInputUpdate(e);
+                    this.blur();            // optional: remove focus
+                }
+            });
+        });
+
+        function closeBillModal() {
+            const modal = document.getElementById("billModal");
+            modal.classList.remove("show");
+            modal.style.display = "none";
+            document.body.classList.remove("modal-open");
+        }
+
+        function printBill() {
+            const printContent = document.getElementById("printArea").innerHTML;
+            const originalContent = document.body.innerHTML;
+
+            document.body.innerHTML = printContent;
+            window.print();
+            document.body.innerHTML = originalContent;
+            location.reload();
+        }
+
+
+        function submitData(){
+                    
+            let customer_name = $("#customerName").val();
+            let customer_number = $("#customerNo").val();
+            let invoice_date = $("#billingdate").val();
+            let totalbill = sessionStorage.getItem("totalamount")
+
+            // Get items from sessionStorage
+            let items_list = JSON.parse(sessionStorage.getItem("productCart"));
+
+            $.ajax({
+                url: "{% url 'createEsstimate' %}",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    customer_name: customer_name,
+                    customer_number: customer_number,
+                    invoice_date: invoice_date,
+                    items_list: items_list,
+                    totalbill: totalbill
+                }),
+                success: function (response) {
+                    sessionStorage.removeItem("productCart");
+                    sessionStorage.removeItem("totalamount");
+                    window.location.href = "{% url 'esstimatePage' %}";
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+
+        function generateBill() {
+            const productCart = JSON.parse(sessionStorage.getItem('productCart')) || [];
+
+            const customerName = jQuery("#customerName").val();
+            const customerNo = jQuery("#customerNo").val();
+
+            let total = 0;
+            let rows = "";
+
+            productCart.forEach(item => {
+                const price = item.product_price * item.quantity;
+                total += price;
+
+                rows += `
+                    <tr>
+                        <td>${item.product_name_eng}</td>
+                        <td class="center">${item.quantity}</td>
+                        <td class="right">₹${price.toFixed(2)}</td>
+                    </tr>
+                `;
+            });
+
+            const billHTML = `
+                <div class="bill" id="printArea">
+                    <h4 class="Center">ESSTIMATE</h4>
+                    ${customerName ? `
+                        <div class="Left">
+                            Customer Name: ${customerName}<br>
+                            Customer Contact: ${customerNo}
+                        </div>
+                        <hr>
+                    ` : ``}
+                    <table>
+                        ${rows}
+                    </table>
+                    <hr>
+                    <table>
+                        <tr>
+                            <td><b>Gross Total</b></td>
+                            <td></td>
+                            <td class="right"><b>₹${total.toFixed(2)}</b></td>
+                        </tr>
+                    </table>
+                    <hr>
+                    <div class="center">Thank You 🙏</div>
+                </div>
+            `;
+
+            jQuery("#billContent").html(billHTML);
+            document.getElementById("billModal").classList.add("show");
+            document.getElementById("billModal").style.display = "block";
+            document.body.classList.add("modal-open");
+        }
+
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('productForm');
+    
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+    
+                form.classList.add('was-validated');
+            });
+        });
+    </script>
+    <script src="{% static 'assets\bundles\mainscripts.bundle.js' %}"></script>
+    <script src="{% static 'assets\bundles\morrisscripts.bundle.js' %}"></script>
+    <script src="{% static 'assets\bundles\jvectormap.bundle.js' %}"></script>
+    <script src="{% static 'assets\bundles\knob.bundle.js' %}"></script>
+    <script src="{% static 'assets\js\pages\index.js' %}"></script>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/59f5afbbbb0c3f433d4c5c4c/default';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
+</body>
+</html>

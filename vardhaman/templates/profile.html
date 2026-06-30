@@ -1,0 +1,192 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="csrf-token" content="iL8hUXsdXy71MbOZjq4fWUv4KGPZnJ7k17P7RClL">
+    <link rel="icon" href="https://thememakker.com/templates/oreo/hospital/laravel/public/favicon.ico" type="image/x-icon"> 
+    <!-- Favicon-->
+    <link rel="icon" href="{% static 'images/vardhaman.png' %}" type="image/png" />
+    <title>Vardhaman Gruh Udhyog</title>
+    <meta name="description" content="Oero Laravel">
+    <meta name="author" content="Oero Laravel">
+
+    <link rel="stylesheet" href="{% static 'assets\plugins\bootstrap\css\bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets\plugins\jvectormap\jquery-jvectormap-2.0.3.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets\plugins\morrisjs\morris.min.css' %}">
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="{% static 'assets\css\main.css' %}">
+    <link rel="stylesheet" href="{% static 'assets\css\color_skins.css' %}">
+</head>
+
+<body class="theme-purple">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+
+            <div class="m-t-30"><img class="zmdi-hc-spin" src="{% static 'assets\images\logo.svg' %}" width="48"
+                    height="48" alt="Civil Hospital"></div>
+            <p>Please wait...</p>
+        </div>
+    </div>
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    {% include 'base.html' %} 
+    {% include 'left.html' %}
+   <section class="content home">
+        <div class="block-header">
+            <div class="col-lg-3 col-md-3 col-sm-12">
+                <h2><img class="navbar-brand" src="{% static 'assets\images\Index-Icons\pro.png' %}" width="50" style="border-radius: 100px;"/>Admin Profile<small class="text-muted">Welcome to Vardhaman Gruh Udhyog</small></h2>
+            </div>
+        </div>
+        <br>
+        <div class="body container-fluid">
+            <!-- Nav tabs -->
+            <!-- Tab panes -->
+            <div class="tab-content m-t-10">
+                <div class="tab-pane table-responsive active" id="All">
+                    <div class="container">
+                        <div class="form-container">
+                            <form id="productForm" autocomplete='off' class="needs-validation" novalidate enctype="multipart/form-data" action="{% url 'profileUpdate' %}" method="POST"> {% csrf_token %}
+                                <div class="form-row">
+                                    <div class="col-md-12 mb-3">
+                                        <label for="productQty">Shop Name:</label>
+                                        <input type="text" class="form-control" id="shopname" Placeholder='Please Enter Shop Name' name="shopname" value='{{userData.shopname}}' required>
+                                        <div class="invalid-feedback">
+                                            Please enter a Shop Name.
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <div class="form-row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="productName">Bank Name:</label>
+                                        <input type="text" class="form-control" id="bankName" Placeholder='Please Enter Bank Name' name="bankName" value='{{userData.bankname}}' required>
+                                        <div class="invalid-feedback">
+                                            Please enter a Bank Name
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="productName">Account Holder Name:</label>
+                                        <input type="text" class="form-control" id="holderName" Placeholder='Please Enter Account Holder Name' name="holderName" value='{{userData.holderName}}' required>
+                                        <div class="invalid-feedback">
+                                            Please enter a Account Holder Name
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-3 mb-3">
+                                        <label for="productName">IFSC Code:</label>
+                                        <input type="text" class="form-control" id="ifscCode" Placeholder='Please Enter IFSC Code' name="ifscCode" value='{{userData.ifsc_code}}' required>
+                                        <div class="invalid-feedback">
+                                            Please enter a IFSC Code
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="productName">Branch Name:</label>
+                                        <input type="text" class="form-control" id="branchName" Placeholder='Please Enter Branch Name' name="branchName" value='{{userData.branch_name}}' required>
+                                        <div class="invalid-feedback">
+                                            Please enter a Branch Name
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="productName">Account Number:</label>
+                                        <input type="text" class="form-control" oninput="validateNumeric(this)" id="accountNum" Placeholder='Please Enter Account Number' name="accountNum" value='{{userData.account_num}}' required>
+                                        <div class="invalid-feedback">
+                                            Please enter a Account Number
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <div class="form-row">
+                                    <div class="col-md-12 mb-3">
+                                        <label for="productQty">FSSAI No:</label>
+                                        <input type="text" class="form-control" id="fassai" Placeholder='Please Enter FSSAI No' name="fassai" value='{{userData.fassai}}' required>
+                                        <div class="invalid-feedback">
+                                            Please enter a FSSAI No.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-12 mb-3">
+                                        <label for="productQty">GSTIN/UIN No:</label>
+                                        <input type="text" class="form-control" id="gst" Placeholder='Please Enter GSTIN/UIN' name="gst" value='{{userData.gst_no}}' required>
+                                        <div class="invalid-feedback">
+                                            Please enter a GSTIN/UIN No.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="margin: 1rem;"></div>
+                                <div class="form-row">
+                                    <div class="col-md-12 text-right">
+                                        <a href="{% url 'indexpage' %}" class="btn btn-danger">Cancel</a>
+                                        <button type="submit" class="btn btn-success mr-2">{% if productData.id %}Update{% else%}Submit{% endif %}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Scripts -->
+    <script src="{% static 'assets\bundles\libscripts.bundle.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'assets\bundles\vendorscripts.bundle.js' %}"></script>
+    <script>
+        // return the integer value
+        function validateNumeric(input) {
+            // Remove non-numeric characters and allow for decimal points
+            input.value = input.value.replace(/[^0-9.]/g, '');
+        
+            // Remove extra decimal points
+            input.value = input.value.replace(/\.{2,}/g, '.');
+        
+            // Remove leading decimal point
+            input.value = input.value.replace(/^\./g, '');
+        
+            // Remove non-leading minus signs
+            input.value = input.value.replace(/-+/g, m => (m.length > 1 ? '' : m));
+        
+            // Remove leading zeros, except for the case where it's the only character
+            input.value = input.value.replace(/^0+(?=[^.])/, '');
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('productForm');
+    
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+    
+                form.classList.add('was-validated');
+            });
+        });
+    </script>
+    <script src="{% static 'assets\bundles\mainscripts.bundle.js' %}"></script>
+    <script src="{% static 'assets\bundles\morrisscripts.bundle.js' %}"></script>
+    <script src="{% static 'assets\bundles\jvectormap.bundle.js' %}"></script>
+    <script src="{% static 'assets\bundles\knob.bundle.js' %}"></script>
+    <script src="{% static 'assets\js\pages\index.js' %}"></script>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/59f5afbbbb0c3f433d4c5c4c/default';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
+</body>
+</html>

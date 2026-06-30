@@ -1,0 +1,120 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="csrf-token" content="iL8hUXsdXy71MbOZjq4fWUv4KGPZnJ7k17P7RClL">
+    <link rel="icon" href="https://thememakker.com/templates/oreo/hospital/laravel/public/favicon.ico"type="image/x-icon"> 
+    <!-- Favicon-->
+    <link rel="icon" href="{% static 'images/vardhaman.png' %}" type="image/png" />
+    <title>Vardhaman Gruh Udhyog</title>
+    <meta name="description" content="Oero Laravel">
+    <meta name="author" content="Oero Laravel">
+
+
+
+    <link rel="stylesheet" href="{% static '\assets\plugins\bootstrap\css\bootstrap.min.css' %}">
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="{% static '\assets\css\main.css' %}">
+    <link rel="stylesheet" href="{% static '\assets\css\authentication.css' %}">
+    <link rel="stylesheet" href="{% static '\assets\css\color_skins.css' %}">
+
+
+</head>
+
+
+<body class="theme-cyan authentication sidebar-collapse">
+
+    <nav class="navbar navbar-expand-lg fixed-top navbar-transparent">
+        <div class="container">
+            <div class="navbar-translate n_logo">
+                <a class="navbar-brand" href="javascript:void(0);" title="" target="_blank"><h3 style="font-family: cursive;">Vardhaman Gruh Udhyog</h3></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <div class="page-header-image">
+        <img src="{% static 'images\bgg\bg-light-img-d.jpg' %}" alt="" height="750px" width="1530px">
+        </div>
+
+        <div class="container">
+            <div class="col-md-12 content-center">
+                <div class="card-plain">
+                    <form action="{% url 'loginadmin' %}" id="loginForm" autocomplete='off' class="form needs-validation" novalidate method="POST">{% csrf_token %}
+                        <div class="header">
+                            <div class="logo-container">
+                                 <img src="{% static 'images\favicon.svg' %}" height='120px' width='100%' style="margin-top: 10px; margin-bottom: 10px;" alt="">
+                            </div>
+                        </div>
+                        {% if err %}
+                        <h5 style="color: red;">{{err}}</h5>
+                        {% endif %}
+                        <div class="content">
+                            <div class="input-group input-lg">
+                                <input type="text" class="form-control" id='username' placeholder="Enter Username"  name="username" required>
+                                <span class="input-group-addon">
+                                    <i class="zmdi zmdi-email"></i>
+                                </span>
+                                <div class="invalid-feedback">
+                                    Please enter a Username.
+                                </div>
+                            </div>
+                            <div class="input-group input-lg">
+                                <input type="password" placeholder="Enter Password" id='password' name="password" class="form-control" required>
+                                <span class="input-group-addon">
+                                    <i class="zmdi zmdi-lock"></i>
+                                </span>
+                                <div class="invalid-feedback">
+                                    Please enter a Password.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="footer text-center">
+                            <input type="submit" value="SIGN IN" class="btn btn-primary btn-round btn-lg btn-block ">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Footer Start -->
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        Copyright © 2024. All right reserved.
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- end Footer -->
+
+
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('loginForm');
+    
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+    
+                form.classList.add('was-validated');
+            });
+        });
+    </script>
+    <!-- Scripts -->
+    <script src="{% static '\assets\bundles\libscripts.bundle.js' %}"></script>
+    <script src="{% static '\assets\bundles\vendorscripts.bundle.js' %}"></script>
+
+</body>
+
+</html>

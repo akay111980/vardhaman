@@ -1,0 +1,388 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+      <meta name="csrf-token" content="iL8hUXsdXy71MbOZjq4fWUv4KGPZnJ7k17P7RClL">
+      <link rel="icon" href="https://thememakker.com/templates/oreo/hospital/laravel/public/favicon.ico" type="image/x-icon">
+      <!-- Favicon-->
+      <link rel="icon" href="{% static 'images/vardhaman.png' %}" type="image/png" />
+      <title>Vardhaman Gruh Udhyog</title>
+      <meta name="description" content="Oero Laravel">
+      <meta name="author" content="Oero Laravel">
+      <link rel="stylesheet" href="{% static 'assets\plugins\bootstrap\css\bootstrap.min.css' %}">
+      <link rel="stylesheet" href="{% static 'assets\plugins\jvectormap\jquery-jvectormap-2.0.3.min.css' %}">
+      <link rel="stylesheet" href="{% static 'assets\plugins\morrisjs\morris.min.css' %}">
+      <!-- Custom Css -->
+      <link rel="stylesheet" href="{% static 'assets\css\main.css' %}">
+      <link rel="stylesheet" href="{% static 'assets\css\color_skins.css' %}">
+      <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+   </head>
+   <body class="theme-purple">
+      <!-- Page Loader -->
+      <div class="page-loader-wrapper">
+         <div class="loader">
+            <div class="m-t-30"><img class="zmdi-hc-spin" src="{% static 'assets\images\logo.svg' %}" width="48"
+               height="48" alt="Civil Hospital"></div>
+            <p>Please wait...</p>
+         </div>
+      </div>
+      <!-- Overlay For Sidebars -->
+      <div class="overlay"></div>
+      {% include 'base.html' %} 
+      {% include 'left.html' %}
+      <section class="content home">
+         <div class="block-header">
+            <div class="form-row">
+               <div class="col-md-6 mb-3">
+               </div>
+               <div class="col-md-6 mb-3 text-right">
+                  <button class="btn btn-primary" onclick="printDiv('printableArea')" style="background:#243ec6;">Print</button>
+               </div>
+            </div>
+         </div>
+         <br>
+         <div class="body container-fluid" id="printableArea">
+         <div class="tab-content m-t-10" >
+         <html>
+            <head>
+            </head>
+            <style type="text/css" media="print">
+               @page 
+               {
+               size:  100%;   /* auto is the initial value */
+               margin: 0mm;  /* this affects the margin in the printer settings */
+               }
+            </style>
+            <body>
+               <div style="margin:2rem;">
+               <table style="font-size: 12px;font-family: monospace;"
+                  width="100%" border="1" cellpadding="1" cellspacing="0" align="center"
+                  >
+                  <tbody>
+                     <tr style="border-top:none; border-left:none; border-right:none;">
+                        <td colspan='12' >
+                           <div style="display:flex;">
+                              <div style="width:75%;">
+                                 <p style="margin:1px; text-align:center; font-size:14px;"><b>Tax Invoice</b></p>
+                              </div>
+                              <div style="width:25%;">
+                                 <p style="margin:1px; text-align:right;">(ORIGINAL FOR RECIPIENT)</p>
+                              </div>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td style='width:80%' rowspan='3'>
+                           <div style="margin: 1px;
+                              text-align: left;
+                              font-size: 13px;"
+                              >
+                              <p style="margin:1px; font-size:18px">
+                                 <b> {{seller.shopname|upper}}</b>
+                              </p>
+                              <p style="width: 350px;white-space: normal;word-break: break-word;margin:1px">
+                                 {{seller.address |title}}
+                              </p>
+                              <p style="margin:1px"><b>Mo:</b> {{seller.contact_no}}</p>
+                              <p style="margin:1px"><b>FSSAI No:</b> {{seller.fassai}}</p>
+                              <p style="margin:1px"><b>GSTIN/UIN:</b> {{seller.gst_no}}</p>
+                              <p style="margin:1px"><b>State Name:</b> Gujarat, <b>Code:</b> 24</p>
+                           </div>
+                        </td>
+                        <td style="width:10%">
+                           Invoice No.
+                           <p style="margin:1px">{{order.order_id}}</p>
+                        </td>
+                        <td style="width:10%">
+                           Date
+                           <p style="margin:1px"> {{order.invoice_date |  date:"d/m/Y"}}</p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td style="width:10%">
+                           <p style="margin:1px; white-space: nowrap;">Delivery Note</p>
+                           <p></p>
+                        </td>
+                        <td style="width:10%">
+                           <p style="margin:1px; white-space: nowrap; font-size:10px;">Mode/Terms of payment</p>
+                           <p></p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td style="width:10%">
+                           <p style="margin:1px; white-space: nowrap; font-size:10px;">Ref No. & Date</p>
+                           <p></p>
+                        </td>
+                        <td style="width:10%">
+                           <p style="margin:1px; white-space: nowrap; font-size:10px;">Other Reference</p>
+                           <p></p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td style='width:80%' rowspan='4'>
+                           <div style="margin: 1px;
+                              text-align: left;
+                              font-size: 13px;"
+                              >
+                              <p style="margin:1px; font-size:13px">
+                                 Buyer (Bill to)
+                              </p>
+                              <p style="margin:1px; font-size:15px">
+                                 <b> {{order.name}}</b>
+                              </p>
+                              <p style="width: 350px;white-space: normal;word-break: break-word;margin:1px">
+                                 {{order.address}}
+                              </p>
+                              <p style="margin:1px"><b>MO</b> {% if order.contact_no %}{{order.contact_no}} {% endif %}</p>
+                              <p style="margin:1px"><b>Email</b> {% if order.email %}{{order.email}} {% endif %}</p>
+                              <p style="margin:1px"><b>GSTIN/UIN:</b> {% if order.gst_no != '' %}{{order.gst_no}} {% endif %}</p>
+                           </div>
+                        </td>
+                        <td style="width:10%">
+                           <p style="margin:1px; white-space: nowrap; font-size:10px;">Buyer's Order No.</p>
+                           <p></p>
+                        </td>
+                        <td style="width:10%">
+                           <p style="margin:1px; white-space: nowrap; font-size:10px;">Date</p>
+                           <p></p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td style="width:10%">
+                           <p style="margin:1px; white-space: nowrap; font-size:10px;">Dispatched through</p>
+                           <p></p>
+                        </td>
+                        <td style="width:10%">
+                           <p style="margin:1px; white-space: nowrap; font-size:10px;">Destination</p>
+                           <p></p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td style="width:20%; border-bottom:none;" colspan='2'>
+                           <p style="margin:1px; white-space: nowrap; font-size:10px;">Terms of Delivery</p>
+                           <div style='height:30px'>
+                              <p></p>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td style="width:20%; border-top:none;" colspan='2'></td>
+                     </tr>
+                  </tbody>
+               </table>
+               <table style="font-size: 12px;font-family: monospace;"
+                  width="100%" border="1" cellpadding="1" cellspacing="0" align="center"
+                  >
+                  <thead>
+                     <tr>
+                        <th style="width:2%; text-align:center">S No.</th>
+                        <th style="width:52%; text-align:center">Description of Goods.</th>
+                        <th style="width:5%; text-align:center">HSN/SAC <br>Code</th>
+                        <th style="width:3%; text-align:center">QTY</th>
+                        <th style="width:3%; text-align:center">Unit</th>
+                        <th style="width:7%; text-align:center">List Price</th>
+                        <th style="width:3%; text-align:center">Discount</th>
+                        <th style="width:4%; text-align:center">CGST <br>Rate</th>
+                        <th style="width:5%; text-align:center">CGST <br>Amonut</th>
+                        <th style="width:4%; text-align:center">SGST <br>Rate</th>
+                        <th style="width:5%; text-align:center">SGST <br>Amonut</th>
+                        <th style="width:7%; text-align:center">Amonut</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {% for pr in orderList %}
+                     <tr>
+                        <td style="width:2%; border-top:none; padding-bottom:3px; border-bottom:none;">{{forloop.counter}}. </td>
+                        <td style="width:52%; border-top:none; padding-bottom:3px; border-bottom:none;">{{pr.product_id.product_name_eng}}</td>
+                        <td style="width:5%; border-top:none; padding-bottom:3px; border-bottom:none; text-align:center;">{{pr.product_id.product_hsn_code}}</td>
+                        <td style="width:3%; border-top:none; padding-bottom:3px; border-bottom:none; text-align:center;">{{pr.qty}}</td>
+                        <td style="width:3%; border-top:none; padding-bottom:3px; border-bottom:none; text-align:center;">{% if pr.product_id.product_unit %}{{pr.product_id.product_unit}}{% endif %}</td>
+                        <td style="width:7%; border-top:none; padding-bottom:3px; border-bottom:none; text-align:right;">{{pr.product_id.product_price}}</td>
+                        <td style="width:3%; border-top:none; padding-bottom:3px; border-bottom:none; text-align:center;">{% if pr.product_id.product_discount_rate %}{{pr.product_id.product_discount_rate}}%{% endif %}</td>
+                        <td style="width:4%; border-top:none; padding-bottom:3px; border-bottom:none; text-align:center;">{{pr.cgst_rate}}%</td>
+                        <td style="width:5%; border-top:none; padding-bottom:3px; border-bottom:none; text-align:right;">{{pr.cgst_amount}}</td>
+                        <td style="width:4%; border-top:none; padding-bottom:3px; border-bottom:none; text-align:center;">{{pr.sgst_rate}}%</td>
+                        <td style="width:5%; border-top:none; padding-bottom:3px; border-bottom:none; text-align:right;">{{pr.sgst_amount}}</td>
+                        <td style="width:7%; border-top:none; padding-bottom:3px; border-bottom:none; text-align:right;">{{pr.tax_amount}}</td>
+                     </tr>
+                     {% endfor %}
+                     <tr>
+                        <td style="border-top:none;">&nbsp;</td>
+                        <td style="border-top:none;">&nbsp;</td>
+                        <td style="border-top:none;">&nbsp;</td>
+                        <td style="border-top:none;">&nbsp;</td>
+                        <td style="border-top:none;">&nbsp;</td>
+                        <td style="border-top:none;">&nbsp;</td>
+                        <td style="border-top:none;">&nbsp;</td>
+                        <td style="border-top:none;">&nbsp;</td>
+                        <td style="border-top:none;">&nbsp;</td>
+                        <td style="border-top:none;">&nbsp;</td>
+                        <td style="border-top:none;">&nbsp;</td>
+                        <td style="border-top:none;">&nbsp;</td>
+                     </tr>
+                  </tbody>
+                  <tfoot>
+                     <tr style="text-align:right;">
+                        <td colspan='11' style="text-align:right; padding:5px;">
+                           <div style="height:2rem">
+                              <div>&nbsp;
+                              </div>
+                              <div style="margin-right:100px; font-style:italic">
+                                 {{order.round_type}}
+                              </div>
+                        </td>
+                        <td style="width:15%; padding:5px;">
+                        <div style="height:2rem;">
+                        <div style="font-weight:bold;">
+                        {{order.total_amount}}
+                        </div>
+                        <div>
+                        {{order.round_off}}
+                        </div>
+                        </div>
+                        </td>
+                     </tr>
+                     <tr>
+                     <th style="border-bottom:none; text-align:right; padding:5px;" colspan='11'>Grand Total</th>
+                     <th colspan='1' style="width:15%;">{{order.grand_total_amount}}</th>
+                     </tr>
+                     <tr>
+                     <td colspan='11' style="border-top:none; border-bottom:none; border-right:none;">&nbsp;</td>
+                     <td colspan='1' style="width:15%; border-bottom:none; border-left:none;">&nbsp;</td>
+                     </tr>
+                     <tr>
+                     <td colspan='12' style="border-top:none; border-bottom:none;">
+                     <table width='50%' cellpadding="1" cellspacing="0" style="margin:0 0 10px 5rem; text-align:center;">
+                     <tr>
+                     <th style="border-bottom:solid 1px black; padding:3px;">Total Rate</th>
+                     <th style="border-bottom:solid 1px black; padding:3px;">Taxable Amt.</th>
+                     <th style="border-bottom:solid 1px black; padding:3px;">CGST Amt.</th>
+                     <th style="border-bottom:solid 1px black; padding:3px;">SGST Amt.</th>
+                     <th style="border-bottom:solid 1px black; padding:3px;">Total Tax</th>
+                     </tr>
+                     {% for tax in taxes_order %}
+                     <tr>
+                     <td>{% if tax.tax_rate %}{{tax.tax_rate}}%{% endif %}</td>
+                     <td>{{tax.taxable_amount}}</td>
+                     <td>{{tax.cgst_amount}}</td>
+                     <td>{{tax.sgst_amount}}</td>
+                     <td>{{tax.total_tax_amount}}</td>
+                     </tr>
+                     {% endfor %}
+                     <tr>
+                     <td style="border-top:solid 1px black; padding-top:2px;"></td>
+                     <td style="border-top:solid 1px black; padding-top:2px;">{{order.taxable_amount}}</td>
+                     <td style="border-top:solid 1px black; padding-top:2px;">{{order.cgst_amount}}</td>
+                     <td style="border-top:solid 1px black; padding-top:2px;">{{order.sgst_amount}}</td>
+                     <th style="border-top:solid 1px black; padding-top:2px;">{{order.total_tax_amount}}</th>
+                     </tr>
+                     </table>
+                     </td>
+                     </tr>
+                     </tr>
+                     <tr style="text-align:left;">
+                     <td colspan='12'>
+                     <p style="margin:1px; white-space: nowrap; font-size:12px;">Amonut Chargeable (in words)</p>
+                     <p style="margin:1px; white-space: nowrap; font-size:12px; font-weight:bold;">INR {{totalAmountWords | title}}</p>
+                     </td>
+                     </tr>
+                     <tr style="text-align:left">
+                     <td colspan='12'>
+                     <div style="display:flex;">
+                     <div>
+                     <p style="margin:1px; white-space: nowrap; font-size:15px; font-weight:bold;">Bank Details: </p>
+                     </div>
+                     <div style="margin-left:5px">
+                     <p style="margin:1px; white-space: nowrap; font-size:13px;">Bank:- {{seller.bankname}} / <span>Branch: {{seller.branch_name}}</span</p>
+                     <p style="margin:1px; white-space: nowrap; font-size:13px;">A/c Holder Name:- {{seller.holderName}}</p>
+                     <p style="margin:1px; white-space: nowrap; font-size:13px;">A/c No:- {{seller.account_num}}</p>
+                     <p style="margin:1px; white-space: nowrap; font-size:13px;">IFSC:- {{seller.ifsc_code}}</p>
+                     </div>
+                     </div>
+                     </td>
+                     </tr>
+                     <tr style="text-align:left">
+                     <td colspan='7'>
+                     <div style="margin: 1px;
+                        text-align: left;
+                        font-size: 13px;"
+                        >
+                        <p style="margin:1px; font-size:15px">
+                           <u>Declaration</u>
+                        </p>
+                        <p style="margin:1px">We declare that this invoice shows the</p>
+                        <p style="margin:1px">actual price of the goods described and that</p>
+                        <p style="margin:1px">all particulars are true and correct.</p>
+                     </div>
+                     </td>
+                     <td colspan='5'>
+                     <div style="margin:1px;text-align:center;">
+                     <p style="margin:1px; font-size:15px">for, <b>{{seller.shopname|upper}}</b></p>
+                     <p style="margin:1px">&nbsp;</p>
+                     <p style="margin:1px">&nbsp;</p>
+                     <p style="margin:1px">Authorised Signatory</p>
+                     </div>
+                     </td>
+                     </tr>
+                     <tr style="border:none;">
+                        <td colspan='12'>
+                           <div style="margin: 1px; text-align:center; font-size: 13px;">
+                              <p style="margin:1px">SUBJECT TO AHMEDABAD JURIDICTION</p>
+                              <p style="margin:1px">This is a Computer Generated Invoice</p>
+                           </div>
+                        </td>
+                     </tr>
+                  </tfoot>
+               </table>
+               <div>
+            </body>
+         </html>
+         </div>
+         </div>
+      </section>
+      <script>
+         function showSweetAlert(editUrl) {
+             Swal.fire({
+                 title: 'Are you sure?',
+                 text: 'You won\'t be able to revert this!',
+                 icon: 'warning',
+                 showCancelButton: true,
+                 confirmButtonColor: '#3085d6',
+                 cancelButtonColor: '#d33',
+                 confirmButtonText: 'Yes, delete it!'
+             }).then((result) => {
+                 if (result.isConfirmed) {
+                     // If the user clicks "Yes", proceed with the navigation to the edit page
+                     window.location.href = editUrl;
+                 }
+             });
+         }
+      </script>
+      <script>
+         function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+         
+            document.body.innerHTML = printContents;
+         
+            window.print();
+         
+            document.body.innerHTML = originalContents;
+         }
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+      <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+      <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+      <script src="{% static 'assets\bundles\libscripts.bundle.js' %}"></script>
+      <script src="{% static 'assets\bundles\vendorscripts.bundle.js' %}"></script>
+      <script src="{% static 'assets\bundles\mainscripts.bundle.js' %}"></script>
+      <script src="{% static 'assets\bundles\morrisscripts.bundle.js' %}"></script>
+      <script src="{% static 'assets\bundles\jvectormap.bundle.js' %}"></script>
+      <script src="{% static 'assets\bundles\knob.bundle.js' %}"></script>
+      <script src="{% static 'assets\js\pages\index.js' %}"></script>
+   </body>
+</html>

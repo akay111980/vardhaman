@@ -1,0 +1,52 @@
+{% load static %}
+<!-- Left Sidebar -->
+<aside id="leftsidebar" class="sidebar">
+    <div class="tab-content">
+        <div class="tab-pane stretchRight active" id="dashboard">
+            <div class="menu">
+                <ul class="list">
+                    <li class="{% if currentPage == 'profile' %}active open{% endif %}">
+                        <div class="user-info">
+                            <a href="javascript:void(0)">
+                                <img src="{% static 'images\favicon.svg' %}" height='120px' width='100%' style="margin-top: 10px; margin-bottom: 10px;" alt="">
+                            </a>
+                            <div class="detail">
+                                <h6>Hi,</h6>
+                                <h4>Mr. {{request.session.userName}}</h4>
+                                <a href="{% url 'profilePage' %}">
+                                    <i class="zmdi zmdi-account"></i><span>My Profile</span>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="{% if currentPage == 'home' %}active open{% endif %}">
+                        <a href="{% url 'indexpage' %}">
+                            <i class="zmdi zmdi-home"></i><span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="{% if currentPage == 'user' %}active open{% endif %}">
+                        <a href="{% url 'userPage' %}">
+                            <i class="zmdi zmdi-accounts"></i><span>All Users</span>
+                        </a>
+                    </li>
+                    <li class="{% if currentPage == 'product' %}active open{% endif %}">
+                        <a href="{% url 'productPage' %}">
+                            <i class="zmdi zmdi-collection-plus"></i><span>All Products</span>
+                        </a>
+                    </li>
+                    <li class="{% if currentPage == 'orders' %}active open{% endif %}">
+                        <a href="{% url 'ordersPage' %}">
+                            <i class="zmdi zmdi-hourglass-alt"></i><span>Orders</span>
+                        </a>
+                    </li>
+                    <li class="{% if currentPage == 'esstimates' %}active open{% endif %}">
+                        <a href="{% url 'esstimatePage' %}">
+                            <i class="zmdi zmdi-receipt"></i><span>Esstimates</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+<!-- Left Sidebar -->
