@@ -1,10 +1,16 @@
 FROM python:3.10
 
-WORKDIR /
+# safer working directory
+WORKDIR /app
 
-COPY . /
+COPY . /app/
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-CMD ["waitress-serve", "--host=0.0.0.0", "--port=8000", "projectdata.wsgi:application"]
+# recommended for Django production
+RUN pip install gunicorn
+
+EXPOSE 8000
+
+CMD ["gunicorn", "projectdata.wsgi:application", "--bind", "0.0.0.0:8000"]
