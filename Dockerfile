@@ -1,15 +1,19 @@
-FROM python:3.10
+FROM python:3.10-slim
 
-WORKDIR /
+WORKDIR /app
 
-COPY . /
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-RUN pip install gunicorn
+COPY requirements.txt ./
+RUN pip install --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir gunicorn
 
-CMD ["python", "manage.py", "collectstatic", "--noinput"]
+COPY . .
+
+RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD ["gunicorn", "projectdata.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py collectstatic --noinput && gunicorn projectdata.wsgi:application --bind 0.0.0.0:8000"]
