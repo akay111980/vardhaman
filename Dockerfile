@@ -1,18 +1,15 @@
-FROM python:3.10-slim
 
-WORKDIR /app
+FROM python:3.10
 
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+WORKDIR /
 
-COPY requirements.txt ./
+COPY . /
+
 RUN pip install --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt \
     && pip install --no-cache-dir gunicorn
 
-COPY . .
-
-RUN python manage.py collectstatic --noinput
+# CMD ["python", "manage.py", "collectstatic", "--noinput"]
 
 EXPOSE 8000
 
